@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>VEP</title>
+    </head>
+    <body>
+        <canvas id="canvas1">current stock price: $3.15 + 0.15</canvas>
+        <script>
+            const canvas=document.getElementById("canvas1");
+            const ctx=canvas.getContext("2d");
+            canvas.width=window.innerWidth;
+            canvas.height=window.innerHeight;
+            document.addEventListener("keyup",keyup);
+            const d=40;
+            var toggle=false;
+            var run=false;
+            var ms=Date.now();
+            function keyup(evt) {
+                if (evt.key==" ") {
+                    run=!run;
+                }
+            }
+            function animate() {
+                if (run && Date.now()-ms>300) {
+                    ms=Date.now();
+                    for (var i=0; i<canvas.width/d-1; i++) {
+                        toggle=!toggle;
+                        for (var j=0; j<canvas.height/d-1; j++) {
+                            toggle=!toggle;
+                            ctx.beginPath();
+                            ctx.fillStyle=toggle?"black":"white";
+                            ctx.rect(
+                                canvas.width%d/2+d*i,
+                                canvas.height%d/2+d*j,
+                                (d+1)*i-1,
+                                (d+1)*j-1
+                            );
+                            ctx.fill();
+                        }
+                    }
+                    ctx.beginPath();
+                    ctx.fillStyle="lightgray";
+                    ctx.arc(canvas.width/2,canvas.height/2,20,0,2*Math.PI)
+                    ctx.fill();
+                }
+                window.requestAnimationFrame(animate);
+            }
+            animate();
+        </script>
+    </body>
+</html>
